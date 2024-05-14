@@ -28,30 +28,60 @@ test_data = pd.read_csv(
     }
 )
 
-# choose 4 features and price as training target
+# choose features and price as training target
 featuresGroups = [
-    ['cabins', 'decks', 'bathrooms'],
-    ['sale_date', 'cabins', 'decks', 'bathrooms'],
-    ['producer', 'total_area'],
-    ['producer', 'total_area', 'refitted_date', 'created_date'],
-    ['crew_area','cabins_area','maintenance_area','crew_area_coef'],
-    ['total_area_coef','weight_distribution_x','weight_distribution_y','engine_thrust'],
-    ['radar', 'bow_thruster', 'autopilot', 'solar_panels' ],
-    ['navi_quality', 'state', 'overall_quality'],
-    # without dates
-    [
-        'cabins', 'decks', 'bathrooms', 'producer', 'total_area', 'crew_area','cabins_area','maintenance_area','crew_area_coef',
-        'total_area_coef','weight_distribution_x','weight_distribution_y','engine_thrust', 'radar', 'bow_thruster', 'autopilot', 'solar_panels',
-        'navi_quality', 'state', 'overall_quality'
-    ],
-    # with dates
-    [
-        'cabins', 'decks', 'bathrooms', 'producer', 'total_area', 'crew_area', 'cabins_area', 'maintenance_area',
-        'crew_area_coef',
-        'total_area_coef', 'weight_distribution_x', 'weight_distribution_y', 'engine_thrust', 'radar', 'bow_thruster',
-        'autopilot', 'solar_panels',
-        'navi_quality', 'state', 'overall_quality', 'sale_date', 'refitted_date', 'created_date'
-    ]
+    # ['cabins', 'decks', 'bathrooms'],
+    # ['sale_date', 'cabins', 'decks', 'bathrooms'],
+    # ['producer', 'total_area'],
+    # ['producer', 'total_area', 'refitted_date', 'created_date'],
+    # ['crew_area','cabins_area','maintenance_area','crew_area_coef'],
+    # ['total_area_coef','weight_distribution_x','weight_distribution_y','engine_thrust'],
+    # ['radar', 'bow_thruster', 'autopilot', 'solar_panels' ],
+    # ['navi_quality', 'state', 'overall_quality'],
+    # # without dates
+    # [
+    #     'cabins', 'decks', 'bathrooms', 'producer', 'total_area', 'crew_area','cabins_area','maintenance_area','crew_area_coef',
+    #     'total_area_coef','weight_distribution_x','weight_distribution_y','engine_thrust', 'radar', 'bow_thruster', 'autopilot', 'solar_panels',
+    #     'navi_quality', 'state', 'overall_quality'
+    # ],
+    # # with dates
+    # [
+    #     'cabins', 'decks', 'bathrooms', 'producer', 'total_area', 'crew_area', 'cabins_area', 'maintenance_area',
+    #     'crew_area_coef',
+    #     'total_area_coef', 'weight_distribution_x', 'weight_distribution_y', 'engine_thrust', 'radar', 'bow_thruster',
+    #     'autopilot', 'solar_panels',
+    #     'navi_quality', 'state', 'overall_quality', 'sale_date', 'refitted_date', 'created_date'
+    # ]
+    # ['cabins'],
+    # ['decks'],
+    # ['bathrooms'],
+    # ['producer'],
+    # ['total_area'],
+    # ['crew_area'],
+    # ['cabins_area'],
+    # ['maintenance_area'],
+    # ['crew_area_coef'],
+    # ['total_area_coef'],
+    # ['weight_distribution_x'],
+    # ['weight_distribution_y'],
+    # ['engine_thrust'],
+    # ['radar'],
+    # ['bow_thruster'],
+    # ['autopilot'],
+    # ['solar_panels'],
+    # ['navi_quality'],
+    # ['state'],
+    # ['overall_quality'],
+    # ['sale_date'],
+    # ['refitted_date'],
+    # ['created_date']
+    ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef', 'bathrooms', 'navi_quality', 'maintenance_area'],
+    ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef', 'bathrooms', 'navi_quality'],
+    ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef', 'bathrooms'],
+    ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef'],
+    ['crew_area', 'overall_quality', 'cabins_area'],
+    ['crew_area', 'overall_quality'],
+    ['crew_area'],
 ]
 
 for i, features in enumerate(featuresGroups):
@@ -66,10 +96,8 @@ for i, features in enumerate(featuresGroups):
     test_x = test_data[features]
     test_data['price'] = model.predict(test_x)
 
-    test_data[['id', 'price']].to_csv("output/%s-my_submission.csv" % (str(i)), index=False)
+    test_data[['id', 'price']].to_csv("output/%s-my_submission.csv" % (str(i + 1)), index=False)
 
     # check
     checkData = model.predict(train_x)
-    print(str(i) + ' - ' + str(mean_absolute_error(train_y, checkData)))
-
-    print(model.score(train_x, train_y))
+    print(str(i + 1) + ' - ' + str(mean_absolute_error(train_y, checkData)) + ' - ' + str(model.score(train_x, train_y)))
