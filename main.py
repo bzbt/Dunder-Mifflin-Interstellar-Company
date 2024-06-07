@@ -1,6 +1,8 @@
 from sklearn.metrics import mean_absolute_error
 import pandas as pd
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor as usedModel
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 
 
 def to_ordinal(x, frmt):
@@ -45,13 +47,13 @@ featuresGroups = [
     #     'navi_quality', 'state', 'overall_quality'
     # ],
     # # with dates
-    # [
-    #     'cabins', 'decks', 'bathrooms', 'producer', 'total_area', 'crew_area', 'cabins_area', 'maintenance_area',
-    #     'crew_area_coef',
-    #     'total_area_coef', 'weight_distribution_x', 'weight_distribution_y', 'engine_thrust', 'radar', 'bow_thruster',
-    #     'autopilot', 'solar_panels',
-    #     'navi_quality', 'state', 'overall_quality', 'sale_date', 'refitted_date', 'created_date'
-    # ]
+    [
+        'cabins', 'decks', 'bathrooms', 'producer', 'total_area', 'crew_area', 'cabins_area', 'maintenance_area',
+        'crew_area_coef',
+        'total_area_coef', 'weight_distribution_x', 'weight_distribution_y', 'engine_thrust', 'radar', 'bow_thruster',
+        'autopilot', 'solar_panels',
+        'navi_quality', 'state', 'overall_quality', 'sale_date', 'refitted_date', 'created_date'
+    ],
     # ['cabins'],
     # ['decks'],
     # ['bathrooms'],
@@ -76,12 +78,13 @@ featuresGroups = [
     # ['refitted_date'],
     # ['created_date']
     ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef', 'bathrooms', 'navi_quality', 'maintenance_area'],
-    ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef', 'bathrooms', 'navi_quality'],
-    ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef', 'bathrooms'],
-    ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef'],
-    ['crew_area', 'overall_quality', 'cabins_area'],
-    ['crew_area', 'overall_quality'],
-    ['crew_area'],
+    # ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef', 'bathrooms', 'navi_quality'],
+    # ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef', 'bathrooms'],
+    ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef', 'navi_quality'],
+    # ['crew_area', 'overall_quality', 'cabins_area', 'crew_area_coef'],
+    # ['crew_area', 'overall_quality', 'cabins_area'],
+    # ['crew_area', 'overall_quality'],
+    # ['crew_area'],
 ]
 
 for i, features in enumerate(featuresGroups):
@@ -89,7 +92,8 @@ for i, features in enumerate(featuresGroups):
     train_y = train_data['price']
 
     # create model
-    model = LinearRegression()
+    # model = usedModel()
+    model = make_pipeline(StandardScaler(), usedModel(criterion='absolute_error'))
     model.fit(train_x, train_y)
 
     # predict
